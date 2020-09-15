@@ -17,11 +17,10 @@ import java.util.List;
 public interface LivingEntityDropLootCallback_ModifyDrops {
     Event<LivingEntityDropLootCallback_ModifyDrops> EVENT = EventFactory.createArrayBacked(LivingEntityDropLootCallback_ModifyDrops.class,
             (listeners) -> (entity, source, causedByPlayer, loot) -> {
-            List<ItemStack> result = new ArrayList<ItemStack>();
             for (LivingEntityDropLootCallback_ModifyDrops listener : listeners) {
-                result = listener.ModifyDrops(entity, source, causedByPlayer, loot);
+                loot = listener.ModifyDrops(entity, source, causedByPlayer, loot);
             }
-            return result;
+            return loot;
     });
 
     List<ItemStack> ModifyDrops(LivingEntity entity, DamageSource source, boolean causedByPlayer, List<ItemStack> loot);

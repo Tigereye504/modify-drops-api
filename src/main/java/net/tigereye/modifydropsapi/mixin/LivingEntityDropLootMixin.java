@@ -36,10 +36,13 @@ public class LivingEntityDropLootMixin {
         LootTable lootTable = ((LivingEntity) (Object) this).world.getServer().getLootManager().getTable(identifier);
         LootContext.Builder builder = /*((LivingEntity) (Object))*/ this.getLootContextBuilder(causedByPlayer, source);
         List<ItemStack> loot = lootTable.generateLoot(builder.build(LootContextTypes.ENTITY));
-
+        //System.out.println("entity generated "+loot.size()+" items");
         loot.addAll(LivingEntityDropLootCallback_AddDrops.EVENT.invoker().AddDrops(((LivingEntity) (Object) this), source, causedByPlayer));
+        //System.out.println("entity generated "+loot.size()+" items after addDrops");
         loot = LivingEntityDropLootCallback_ModifyDrops.EVENT.invoker().ModifyDrops(((LivingEntity) (Object) this), source, causedByPlayer, loot);
+        //System.out.println("entity generated "+loot.size()+" items after modifyDrops");
         loot.addAll(LivingEntityDropLootCallback_AddUnmodifiableDrops.EVENT.invoker().AddUnmodifiableDrops(((LivingEntity) (Object) this), source, causedByPlayer));
+        //System.out.println("entity generated "+loot.size()+" items after addUnmodifiableDrops");
         //loot = result;//.getValue();
         loot.forEach((stackToDrop) -> {
             ((LivingEntity) (Object) this).dropStack(stackToDrop);
