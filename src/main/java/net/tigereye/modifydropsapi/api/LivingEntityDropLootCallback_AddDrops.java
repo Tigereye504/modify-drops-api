@@ -19,9 +19,9 @@ import java.util.List;
 public interface LivingEntityDropLootCallback_AddDrops {
     Event<LivingEntityDropLootCallback_AddDrops> EVENT = EventFactory.createArrayBacked(LivingEntityDropLootCallback_AddDrops.class,
             (listeners) -> (entity, source, causedByPlayer) -> {
-            List<ItemStack> result = new ArrayList<ItemStack>();
+            List<ItemStack> result = new ArrayList<>();
             for (LivingEntityDropLootCallback_AddDrops listener : listeners) {
-                result = listener.AddDrops(entity, source, causedByPlayer);
+                result.addAll(listener.AddDrops(entity, source, causedByPlayer));
             }
             return result;
     });

@@ -22,7 +22,7 @@ public interface BlockDropStacksCallback_AddDrops {
         (listeners) -> (state, world, pos, blockEntity, entity, stack) -> {
             List<ItemStack> stacksToDrop = new ArrayList<>();
             for (BlockDropStacksCallback_AddDrops listener : listeners) {
-                stacksToDrop = listener.AddDrops(state, world, pos, blockEntity, entity, stack);
+                stacksToDrop.addAll(listener.AddDrops(state, world, pos, blockEntity, entity, stack));
             }
             return stacksToDrop;
     });

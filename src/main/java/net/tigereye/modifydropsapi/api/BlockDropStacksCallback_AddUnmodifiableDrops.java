@@ -22,7 +22,7 @@ public interface BlockDropStacksCallback_AddUnmodifiableDrops {
         (listeners) -> (state, world, pos, blockEntity, entity, stack) -> {
             List<ItemStack> stacksToDrop = new ArrayList<>();
             for (BlockDropStacksCallback_AddUnmodifiableDrops listener : listeners) {
-                stacksToDrop = listener.AddUnmodifiableDrops(state, world, pos, blockEntity, entity, stack);
+                stacksToDrop.addAll(listener.AddUnmodifiableDrops(state, world, pos, blockEntity, entity, stack));
             }
             return stacksToDrop;
     });
