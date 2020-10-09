@@ -18,12 +18,9 @@ public class LootTableGenerateLootMixin {
     public void generateLoot(LootContext context, Consumer<ItemStack> lootConsumer) {
         List<ItemStack> loot = new ArrayList<>();
         ((LootTable)(Object)this).generateUnprocessedLoot(context, loot::add);
-        ModifyDropsAPI.LOGGER.info("modifyDropsAPI is modifying "+loot.size()+" drops");
-        //ModifyDropsAPI.LOGGER.debug("entity "+((LivingEntity) (Object) this).getName().asString()+" generated "+loot.size()+" itemStacks before modifyDropsAPI");
+        ModifyDropsAPI.LOGGER.debug("modifyDropsAPI is modifying "+loot.size()+" drops");
         loot.addAll(GenerateLootCallbackAddLoot.EVENT.invoker().AddDrops(((LootTable)(Object)this).getType(),context));
-        //ModifyDropsAPI.LOGGER.debug("entity "+((LivingEntity) (Object) this).getName().asString()+" generated "+loot.size()+" itemStacks after addDrops");
         loot = GenerateLootCallbackModifyLoot.EVENT.invoker().ModifyDrops(((LootTable)(Object)this).getType(),context, loot);
-        //ModifyDropsAPI.LOGGER.debug("entity "+((LivingEntity) (Object) this).getName().asString()+" generated "+loot.size()+" itemStacks after modifyDrops");
         loot.addAll(GenerateLootCallbackAddUnmodifiableLoot.EVENT.invoker().AddDrops(((LootTable)(Object)this).getType(),context));
         ModifyDropsAPI.LOGGER.debug(loot.size() + " itemStacks returned");
         Consumer<ItemStack> processedConsumer = LootTable.processStacks(lootConsumer);
