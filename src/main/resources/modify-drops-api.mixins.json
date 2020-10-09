@@ -4,10 +4,9 @@
   "package": "net.tigereye.modifydropsapi.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "LootTableGenerateLootMixin"
   ],
   "client": [
-    "BlockDropStacksMixin",
-    "LivingEntityDropLootMixin"
   ],
   "injectors": {
     "defaultRequire": 1

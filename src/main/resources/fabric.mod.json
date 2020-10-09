@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Modify Drops API",
-  "description": "Lets mods change drops in ways loot tables cant",
+  "description": "Hooks for altering the output of loot tables",
   "authors": [
     "David Troyer"
   ],
