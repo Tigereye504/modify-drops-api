@@ -16,7 +16,7 @@ To use Modify Drops API in your mod, add the following line to your dependencies
 ```
 modApi "com.github.tigereye504:modify-drops-api:x.x.x"
 ```
-Optionally, you can imbed Modify Drops API as a jar-in-jar by also includng the following in your dependencies:
+Optionally, you can embed Modify Drops API as a jar-in-jar by also including the following in your dependencies:
 ```
 include "com.github.tigereye504:modify-drops-api:x.x.x"
 ```
