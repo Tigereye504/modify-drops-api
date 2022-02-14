@@ -18,11 +18,11 @@ public class LootTableGenerateLootMixin {
     public void generateLoot(LootContext context, Consumer<ItemStack> lootConsumer) {
         List<ItemStack> loot = new ArrayList<>();
         ((LootTable)(Object)this).generateUnprocessedLoot(context, loot::add);
-        ModifyDropsAPI.LOGGER.debug("modifyDropsAPI is modifying "+loot.size()+" drops");
+        //ModifyDropsAPI.LOGGER.debug("modifyDropsAPI is modifying "+loot.size()+" drops");
         loot.addAll(GenerateLootCallbackAddLoot.EVENT.invoker().AddDrops(((LootTable)(Object)this).getType(),context));
         loot = GenerateLootCallbackModifyLoot.EVENT.invoker().ModifyDrops(((LootTable)(Object)this).getType(),context, loot);
         loot.addAll(GenerateLootCallbackAddUnmodifiableLoot.EVENT.invoker().AddDrops(((LootTable)(Object)this).getType(),context));
-        ModifyDropsAPI.LOGGER.debug(loot.size() + " itemStacks returned");
+        //ModifyDropsAPI.LOGGER.debug(loot.size() + " itemStacks returned");
         Consumer<ItemStack> processedConsumer = LootTable.processStacks(lootConsumer);
         for (ItemStack stack:
              loot) {
