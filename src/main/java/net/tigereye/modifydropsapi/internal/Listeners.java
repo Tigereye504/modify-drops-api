@@ -14,6 +14,13 @@ public class Listeners {
         GenerateLootCallbackAddLoot.EVENT.register(Listeners::AddLootSubEventListener);
         GenerateLootCallbackModifyLoot.EVENT.register(Listeners::ModifyLootSubEventListener);
         GenerateLootCallbackAddUnmodifiableLoot.EVENT.register(Listeners::AddUnmodifiableLootSubEventListener);
+
+        //simple test listener, adds a diamond to all loot tables
+        //GenerateBlockLootCallbackAddLoot.EVENT.register((type, context) -> {
+        //	List<ItemStack> oneDiamondList = new ArrayList<>();
+        //	oneDiamondList.add(new ItemStack(Items.DIAMOND));
+        //	return oneDiamondList;
+        //});
     }
 
     private static List<ItemStack> AddLootSubEventListener(LootContextType type, LootContext context) {
