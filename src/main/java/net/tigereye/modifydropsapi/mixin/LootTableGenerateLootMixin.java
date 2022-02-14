@@ -51,7 +51,7 @@ public class LootTableGenerateLootMixin {
 
     @Inject(method = "generateUnprocessedLoot", at = @At("TAIL"))
     public void generateUnprocessedLootMixin_ModifyPopulatedListAndFeedConsumer(LootContext context, Consumer<ItemStack> lootConsumer, CallbackInfo ci){
-        ModifyDropsAPI.LOGGER.info("modifyDropsAPI is modifying "+interceptedLoot.size()+" drops");
+        ModifyDropsAPI.LOGGER.debug("modifyDropsAPI is modifying "+interceptedLoot.size()+" drops");
         interceptedLoot.addAll(GenerateLootCallbackAddLoot.EVENT.invoker().AddDrops(((LootTable)(Object)this).getType(),context));
         interceptedLoot = GenerateLootCallbackModifyLoot.EVENT.invoker().ModifyDrops(((LootTable)(Object)this).getType(),context, interceptedLoot);
         interceptedLoot.addAll(GenerateLootCallbackAddUnmodifiableLoot.EVENT.invoker().AddDrops(((LootTable)(Object)this).getType(),context));
