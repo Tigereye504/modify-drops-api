@@ -8,6 +8,7 @@ import net.tigereye.modifydropsapi.ModifyDropsAPI;
 import net.tigereye.modifydropsapi.api.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -21,7 +22,9 @@ import java.util.function.Consumer;
 @Mixin(LootTable.class)
 public class LootTableGenerateLootMixin {
 
+    @Unique
     List<ItemStack> interceptedLoot = new ArrayList<>();
+    @Unique
     Consumer<ItemStack> interceptedConsumer;
 
     /*
@@ -42,21 +45,21 @@ public class LootTableGenerateLootMixin {
     }
     */
 
-    @ModifyVariable(method = "generateUnprocessedLoot",  at = @At("HEAD"), ordinal = 0)
+    @ModifyVariable(method = "generateUnprocessedLoot(Lnet/minecraft/loot/context/LootContext;Ljava/util/function/Consumer;)V",  at = @At("HEAD"), ordinal = 0, argsOnly = true)
     public Consumer<ItemStack> generateUnprocessedLootMixin_InterceptConsumerReplaceWithList(Consumer<ItemStack> lootConsumer){
         interceptedLoot.clear();
         interceptedConsumer = lootConsumer;
         return interceptedLoot::add;
     }
 
-    @Inject(method = "generateUnprocessedLoot", at = @At("TAIL"))
+    @Inject(method = "generateUnprocessedLoot(Lnet/minecraft/loot/context/LootContext;Ljava/util/function/Consumer;)V", at = @At("TAIL"))
     public void generateUnprocessedLootMixin_ModifyPopulatedListAndFeedConsumer(LootContext context, Consumer<ItemStack> lootConsumer, CallbackInfo ci){
         ModifyDropsAPI.LOGGER.debug("modifyDropsAPI is modifying "+interceptedLoot.size()+" drops");
         interceptedLoot.addAll(GenerateLootCallbackAddLoot.EVENT.invoker().AddDrops(((LootTable)(Object)this).getType(),context));
         interceptedLoot = GenerateLootCallbackModifyLoot.EVENT.invoker().ModifyDrops(((LootTable)(Object)this).getType(),context, interceptedLoot);
         interceptedLoot.addAll(GenerateLootCallbackAddUnmodifiableLoot.EVENT.invoker().AddDrops(((LootTable)(Object)this).getType(),context));
         ModifyDropsAPI.LOGGER.debug(interceptedLoot.size() + " itemStacks returned");
-        Consumer<ItemStack> processedConsumer = LootTable.processStacks(interceptedConsumer);
+        Consumer<ItemStack> processedConsumer = LootTable.processStacks(context.getWorld(),interceptedConsumer);
         for (ItemStack stack:
                 interceptedLoot) {
             processedConsumer.accept(stack);
